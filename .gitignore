@@ -1,0 +1,13 @@
+*~
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.tex
+*.toc
+*.vrb
+.shake/
+TAGS
+
+*.pdf
