@@ -1,0 +1,15 @@
+[move : T → T → T := λa:T. λb:T. "You put your " a " on " b "\n"]
+[hanoi : N → T → T → T → T := λn:N. λa:T. λb:T. λc:T.
+  { n > 0 =>
+      (hanoi @(n-1) @a @c @b)
+      (move @a @c)
+      (hanoi @(n-1) @b @a @c)
+  }
+]
+[hanoihanoi : N → T := λn:N.
+  (hanoi @n @"A" @"B" @"C")
+  "and you shake them all about\n"
+  "You do the hanoi hanoi and you shake yourself about\n"
+  "That's what it's all about\n"
+]
+hanoihanoi @3

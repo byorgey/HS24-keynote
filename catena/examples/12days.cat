@@ -1,0 +1,31 @@
+[for : N -> (N -> T) -> T := λn:N. λf:N->T. {n > 0 => (f @n) (for @(n-1) @f)}]
+[cardinal : N -> T := λn:N. (%n)
+  { n = 1 => "st"
+  | n = 2 => "nd"
+  | n = 3 => "rd"
+  | n = n => "th"
+  }
+]
+[truelove : N -> T := λn:N. "On the " (cardinal @n) " day of Christmas, my true love gave to me\n"]
+[item : N -> N -> T := λn:N. λi:N.
+  { i = 1  => {n > 1 => "and "} "a partridge in a pear tree"
+  | i = 2  => "two turtle doves"
+  | i = 3  => "three french hens"
+  | i = 4  => "four calling birds"
+  | i = 5  => "five golden rings"
+  | i = 6  => "six geese a-laying"
+  | i = 7  => "seven swans a-swimming"
+  | i = 8  => "eight maids a-milking"
+  | i = 9  => "nine ladies dancing"
+  | i = 10 => "ten lords a-leaping"
+  | i = 11 => "eleven pipers piping"
+  | i = 12 => "twelve drummers drumming"
+  }
+  "\n"
+]
+[verse : N -> T := λn:N.
+  (truelove @n)
+  (for @n @(item @n))
+  "\n"
+]
+for @12 @(λn:N. verse @(13-n))

@@ -4,14 +4,15 @@
 
 module Catena where
 
-import Control.Monad (guard, when)
+import Control.Monad (when)
 import Control.Monad.Combinators.Expr
+import Data.Bifunctor (first)
 import Data.Functor (void)
 import Data.Map (Map, (!))
 import Data.Map qualified as M
-import Data.Maybe (fromMaybe)
 import Data.Text (Text)
 import Data.Text qualified as T
+import Data.Void
 import Text.Megaparsec
 import Text.Megaparsec.Char
 import Text.Megaparsec.Char.Lexer qualified as L
@@ -27,7 +28,7 @@ infixr 0 :->:
 
 type Var = Text
 
-data Const = CCat | CAdd | CSub | CMul | CDiv | CEQ | CGT | CLT | CGE | CLE | CNot | CAnd | COr | CShow
+data Const = CCat | CAdd | CSub | CMul | CDiv | CEQ | CGT | CLT | CGE | CLE | CNE | CNot | CAnd | COr | CShow
   deriving (Eq, Show)
 
 data Term where
@@ -38,14 +39,14 @@ data Term where
   TLet :: Var -> Ty -> Term -> Term -> Term
   TLam :: Var -> Ty -> Term -> Term
   TApp :: Term -> Term -> Term
-  TIf :: Term -> Term -> Term -> Term
+  TCond :: [(Term, Term)] -> Term
   deriving (Show)
 
 ------------------------------------------------------------
 -- Parser
 ------------------------------------------------------------
 
-type Parser = Parsec () Text
+type Parser = Parsec Void Text
 
 sc :: Parser ()
 sc = L.space space1 lineComment empty
@@ -75,6 +76,12 @@ identifier = lexeme (T.cons <$> letterChar <*> (T.pack <$> many alphaNumChar))
 reserved :: Text -> Parser ()
 reserved = void . lexeme . string
 
+opChar :: String
+opChar = "~!@#$%^&*-+=/\\<>"
+
+operator :: Text -> Parser ()
+operator t = (lexeme . try) (string t *> notFollowedBy (oneOf opChar))
+
 parseTerm :: Parser Term
 parseTerm = makeExprParser parseAtom table <?> "expression"
  where
@@ -83,24 +90,25 @@ parseTerm = makeExprParser parseAtom table <?> "expression"
     [ [InfixL (mkBin CCat <$ string "")]
     , [InfixL (TApp <$ symbol "@")]
     ,
-      [ InfixL (mkBin CMul <$ symbol "*")
-      , InfixL (mkBin CDiv <$ symbol "/")
+      [ InfixL (mkBin CMul <$ operator "*")
+      , InfixL (mkBin CDiv <$ operator "/")
       ]
     ,
-      [ InfixL (mkBin CAdd <$ symbol "+")
-      , InfixL (mkBin CSub <$ symbol "-")
+      [ InfixL (mkBin CAdd <$ operator "+")
+      , InfixL (mkBin CSub <$ operator "-")
       ]
     ,
-      [ InfixN (mkBin CEQ <$ symbol "=")
-      , InfixN (mkBin CLE <$ symbol "<=")
-      , InfixN (mkBin CGE <$ symbol ">=")
-      , InfixN (mkBin CLT <$ symbol "<")
-      , InfixN (mkBin CGT <$ symbol ">")
+      [ InfixN (mkBin CEQ <$ operator "=")
+      , InfixN (mkBin CLE <$ operator "≤")
+      , InfixN (mkBin CGE <$ operator "≥")
+      , InfixN (mkBin CLT <$ operator "<")
+      , InfixN (mkBin CGT <$ operator ">")
+      , InfixN (mkBin CNE <$ operator "≠")
       ]
-    , [Prefix (TApp (TConst CShow) <$ symbol "%")]
-    , [Prefix (TApp (TConst CNot) <$ symbol "~")]
-    , [InfixR (mkBin CAnd <$ symbol "&")]
-    , [InfixR (mkBin COr <$ symbol "|")]
+    , [Prefix (TApp (TConst CShow) <$ operator "%")]
+    , [Prefix (TApp (TConst CNot) <$ operator "¬")]
+    , [InfixR (mkBin CAnd <$ operator "∧")]
+    , [InfixR (mkBin COr <$ operator "∨")]
     ]
 
 parseAtom :: Parser Term
@@ -110,7 +118,7 @@ parseAtom =
     <|> TLam <$> (lambda *> identifier) <*> (symbol ":" *> parseType) <*> (symbol "." *> parseTerm)
     <|> TVar <$> identifier
     <|> parseLet
-    <|> parseIf
+    <|> parseCond
     <|> parens parseTerm
 
 parseLet :: Parser Term
@@ -118,14 +126,14 @@ parseLet = do
   let' <- brackets $ TLet <$> identifier <*> (symbol ":" *> parseType) <*> (symbol ":=" *> parseTerm)
   let' <$> parseTerm
 
-parseIf :: Parser Term
-parseIf = braces $ TIf <$> parseTerm <*> (symbol "?" *> parseTerm) <*> (symbol ":" *> parseTerm)
+parseCond :: Parser Term
+parseCond = braces $ TCond <$> ((,) <$> parseTerm <*> (symbol "=>" *> parseTerm)) `sepBy` symbol "|"
 
 parseType :: Parser Ty
 parseType = makeExprParser parseTypeAtom table <?> "type"
  where
   table =
-    [[InfixR ((:->:) <$ symbol "->")]]
+    [[InfixR ((:->:) <$ (symbol "->" <|> symbol "→"))]]
 
 parseTypeAtom :: Parser Ty
 parseTypeAtom =
@@ -134,6 +142,9 @@ parseTypeAtom =
     <|> TyB <$ reserved "B"
     <|> parens parseType
 
+readTerm :: Text -> Either Text Term
+readTerm t = first (T.pack . errorBundlePretty) (runParser parseTerm "" t)
+
 ------------------------------------------------------------
 -- Typechecker
 ------------------------------------------------------------
@@ -141,10 +152,18 @@ parseTypeAtom =
 type Ctx = Map Var Ty
 
 data TypeError
-  = Unbound Var
-  | Mismatch Ty Ty
-  | NotFun Ty
+  = Unbound !Var
+  | Mismatch !Ty !Ty
+  | NotFun !Ty
   deriving (Show)
+
+showT :: Show a => a -> Text
+showT = T.pack . show
+
+prettyTypeError :: TypeError -> Text
+prettyTypeError (Unbound x) = "Undefined variable " <> x
+prettyTypeError (Mismatch ty1 ty2) = "Type mismatch: expected " <> showT ty1 <> ", got " <> showT ty2
+prettyTypeError (NotFun ty) = "Expected " <> showT ty <> " to be a function type, but it is not"
 
 check :: Ctx -> Ty -> Term -> Either TypeError ()
 check ctx ty t = do
@@ -168,12 +187,10 @@ infer ctx = \case
       tyA :->: tyB -> do
         check ctx tyA t2
         pure tyB
-      _ -> Left $ NotFun ty1
-  TIf c t1 t2 -> do
-    check ctx TyB c
-    tyA <- infer ctx t1
-    check ctx tyA t2
-    pure tyA
+      _notFun -> Left $ NotFun ty1
+  TCond cs -> do
+    mapM_ (\(c, b) -> check ctx TyB c *> check ctx TyT b) cs
+    pure TyT
 
 inferConst :: Const -> Ty
 inferConst = \case
@@ -187,6 +204,7 @@ inferConst = \case
   CLT -> TyN :->: TyN :->: TyB
   CGE -> TyN :->: TyN :->: TyB
   CLE -> TyN :->: TyN :->: TyB
+  CNE -> TyN :->: TyN :->: TyB
   CNot -> TyB :->: TyB
   CAnd -> TyB :->: TyB :->: TyB
   COr -> TyB :->: TyB :->: TyB
@@ -223,9 +241,14 @@ interp e = \case
      in case v1 of
           VFun f -> f v2
           VClo e' x t -> interp (M.insert x v2 e') t
-  TIf c t1 t2 -> case interp e c of
-    VBool True -> interp e t1
-    VBool False -> interp e t2
+  TCond cs -> interpCond e cs
+
+interpCond :: Env -> [(Term, Term)] -> Value
+interpCond e = \case
+  [] -> VTxt ""
+  ((c, b) : cs) -> case interp e c of
+    VBool True -> interp e b
+    VBool False -> interpCond e cs
 
 interpConst :: Const -> Value
 interpConst = \case
@@ -239,6 +262,7 @@ interpConst = \case
   CLT -> VFun $ \(VNat x) -> VFun $ \(VNat y) -> VBool (x < y)
   CGE -> VFun $ \(VNat x) -> VFun $ \(VNat y) -> VBool (x >= y)
   CLE -> VFun $ \(VNat x) -> VFun $ \(VNat y) -> VBool (x <= y)
+  CNE -> VFun $ \(VNat x) -> VFun $ \(VNat y) -> VBool (x /= y)
   CNot -> VFun $ \(VBool x) -> VBool (not x)
   CAnd -> VFun $ \(VBool x) -> VFun $ \(VBool y) -> VBool (x && y)
   COr -> VFun $ \(VBool x) -> VFun $ \(VBool y) -> VBool (x || y)

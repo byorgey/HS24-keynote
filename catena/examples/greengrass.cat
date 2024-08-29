@@ -1,0 +1,33 @@
+[for : N -> (N -> T) -> T := λn:N. λf:N->T. {n > 0 => (f @n) (for @(n-1) @f)}]
+[item : N → (T → T → T) → T := λn:N. λ f:T → T → T.
+  { n = 0 => f @"in" @"ground"
+  | n = 1 => f @"in" @"hole"
+  | n = 2 => f @"on" @"tree"
+  | n = 3 => f @"on" @"branch"
+  | n = 4 => f @"in" @"nest"
+  | n = 5 => f @"in" @"egg"
+  | n = 6 => f @"on" @"bird"
+  | n = 7 => f @"on" @"feather"
+  | n = 8 => f @"on" @"flea"
+  | n = 9 => f @"on" @"eye"
+  }
+]
+[fst : ((T → T → T) → T) → T := λp:(T → T → T) → T. p @(λa:T. λb:T. a)]
+[snd : ((T → T → T) → T) → T := λp:(T → T → T) → T. p @(λa:T. λb:T. b)]
+[chain : N → T := λn:N. for @n @(λi:N.
+  {i = n => "Well," | i < n => "and"}
+  " the " (snd @(item @i)) "'s " (fst @(item @(i-1))) " the " (snd @(item @(i-1))) "\n")
+]
+[verse : N → T := λn:N.
+  [cur : T := snd @(item @n)]
+  [prev : (T → T → T) → T := item @(n-1)]
+  { n = 1 => "There was a hole\nA pretty little hole\n"
+  | n > 1 => "Now " (fst @prev) " that " (snd @prev) "\nThere was a " cur "\n"
+  }
+  "The prettiest little " cur "\n"
+  "That you ever did see\n"
+  (chain @n)
+  "And the green grass grew all around, all around\n"
+  "The green grass grew all around.\n"
+]
+for @9 @(λv:N. (verse @(10-v)) "\n")

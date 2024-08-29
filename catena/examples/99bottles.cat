@@ -1,0 +1,10 @@
+[for : N -> (N -> T) -> T := λn:N. λf:N->T. {n > 0 => (f @n) (for @(n-1) @f)}]
+[plural : N -> T -> T := λn:N. λt:T. (%n) " " t {n ≠ 1 => "s"}]
+[bottles : N -> T := λn:N. (plural @n @"bottle") " of beer"]
+[verse : N -> T := λn:N.
+  (bottles @n) " on the wall\n"
+  (bottles @n) "\n"
+  "take one down, pass it around\n"
+  (bottles @(n-1)) " on the wall\n\n"
+]
+for @5 @verse
