@@ -15,7 +15,7 @@
 [fst : ((T → T → T) → T) → T := λp:(T → T → T) → T. p @(λa:T. λb:T. a)]
 [snd : ((T → T → T) → T) → T := λp:(T → T → T) → T. p @(λa:T. λb:T. b)]
 [chain : N → T := λn:N. for @n @(λi:N.
-  {i = n => "Well," | i < n => "and"}
+  {n = i => "Well," | n > i => "and"}
   " the " (snd @(item @i)) "'s " (fst @(item @(i-1))) " the " (snd @(item @(i-1))) "\n")
 ]
 [verse : N → T := λn:N.
