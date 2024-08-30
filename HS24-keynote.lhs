@@ -1,6 +1,6 @@
 %% -*- mode: LaTeX; compile-command: "./Shake.hs" -*-
 
-\documentclass[xcolor=svgnames,12pt]{beamer}
+\documentclass[xcolor=svgnames,12pt,aspectratio=169]{beamer}
 
 %include polycode.fmt
 
