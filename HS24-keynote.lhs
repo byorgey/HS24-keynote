@@ -98,7 +98,7 @@
 % \usepackage{pgfpages}
 % \pgfpagesuselayout{4 on 1}[uspaper, border shrink=5mm]
 
-\setbeameroption{show notes}
+% \setbeameroption{show notes}
 
 \renewcommand{\emph}{\textbf}
 
@@ -146,9 +146,9 @@
 \end{xframe}
 
 \begin{xframe}{}
-  \begin{center}
-    \includegraphics[width=1in]{04bay.jpg}
-  \end{center}
+  % \begin{center}
+  %   \includegraphics[width=1in]{04bay.jpg}
+  % \end{center}
   \note{I don't tell you this story to boast about how young I was,
     and I certainly don't mean to imply that you need to start
     programming as a teenager in order to be successful.  Obviously
@@ -160,12 +160,50 @@
   of a lifelong obsession with building languages, and XXX.
 
   JOY of building languages.
+
+  XXX also so you can see the languages that you may have heard of
+  didn't form ex nihilo, I had lots of practice, toy throwaway things,
+  etc. along the way
 }
 \end{xframe}
 
 \begin{xframe}{}
+  XXX Outline
+\end{xframe}
+
+\begin{xframe}{}
+  Discord for questions!
+\end{xframe}
+
+\begin{xframe}{}
   \begin{center}
-    {\Large 2. Photizon}
+    {\Large 2. Context Free Art} \bigskip
+
+    \includegraphics[width=2in]{chalk.png} \smallskip
+
+    {\scriptsize \emph{Chalk}, by chris, CC-BY 3.0} \\
+    {\scriptsize \url{https://www.contextfreeart.org/gallery/view.php?id=256}}
+  \end{center}
+  \note{In maybe 2001 or thereabouts, I discovered Context Free Art, a
+    language for generating images from context-free grammars.  It
+    didn't have a feature I wanted (weighted random choice among
+    multiple applicable rules), so I added it.
+  }
+\end{xframe}
+
+\begin{xframe}{}
+  \begin{center}
+    \includegraphics[width=4in]{cfdg.png}
+  \end{center}
+  \note{This was actually my first open-source contribution\dots and
+    23 years later, my name is still in a comment in the current
+    source code!
+  }
+\end{xframe}
+
+\begin{xframe}{}
+  \begin{center}
+    {\Large 3. Photizon}
   \end{center}
   \note{In college, probably around 2002, I wrote a raytracer as a
     project for my graphics class, which I named Photizon.  The
@@ -180,7 +218,102 @@
     \includegraphics[width=4in]{photizon_lego.png}
   \end{center}
   \note{\dots this, with thousands of primitive shapes.  So, of
-    course, I made my own scene description language.}
+    course, I made my own scene description language.  It had things
+    for loops, conditionals, and function definitions; it was
+    basically a macro system, and I wrote a preprocessor that expanded
+    it into the simplified syntax.}
+  \note{XXX again, created a language that let me express what I wanted!}
+\end{xframe}
+
+\begin{xframe}{}
+  \begin{center}
+    {\Large 4. c2bef} \bigskip
+
+    \includegraphics[width=5in]{befunge.png}
+  \end{center}
+  \note{Does anyone recognize this programming language?  This is
+    Befunge, a truly demented esoteric programming language where the
+    program counter is a 2D coordinate and a direction, and each
+    character is an instruction.  I did NOT make this language.  But
+    my best friend Steve Winslow and I, for our winter term project
+    one year, made a compiler that translated a subset of C into
+    Befunge.
+
+    I don't know exactly why we decided to do this, but collaborating
+    intensely for a month with my best friend was a lot of fun, and I
+    learned a lot about parsing and compilers.
+  }
+\end{xframe}
+
+\begin{xframe}{}
+  \begin{center}
+    \includegraphics[width=2in]{haskell.png}
+  \end{center}
+  \note{We're now up to about 2007, which is the year I fell in love
+    with Haskell.  It's a fun story---feel free to ask me about it
+    sometime---but since it's not the point of this talk I won't dwell
+    on it.}
+\end{xframe}
+
+\begin{xframe}{}
+  \begin{center}
+    {\Large 5. adventure} \bigskip
+
+    \includegraphics[width=4in]{adventure.png}
+  \end{center}
+  \note{Apparently I must have read several papers about EDSLs,
+    because one of the first things I did with Haskell, in 2008, was
+    build a (clunky) EDSL for text adventure games.
+
+    XXX what did I learn from this?
+  }
+\end{xframe}
+
+\begin{xframe}{}
+  \begin{center}
+    {\Large 6. species} \bigskip
+
+    \includegraphics[width=3in]{species.png}
+  \end{center}
+  \note{Created a Haskell EDSL for calculating with combinatorial
+    species. Looking back on it now, it's also pretty clunky.  But I
+    built it mostly just to help me learn the theory of combinatorial
+    species, and in that it was quite successful, since I ended up
+    centering my PhD dissertation around them.}
+\end{xframe}
+
+\begin{xframe}{}
+  \begin{center}
+    {\Large 7. diagrams} \bigskip
+
+    \includegraphics[width=5in]{diagrams.png}
+  \end{center}
+    \note{2008: an EDSL for describing and rendering vector graphics.
+      Many of you have probably heard of this library.  What you may
+      not know is that the current version is the \emph{second}
+      diagrams EDSL.  The one I made in 2008 was clunky and had some
+      limiting design decisions.  After thinking about it for more
+      than a year I rewrote the entire thing from scratch and released
+      a much more elegant version in 2011.  Rewriting diagrams with a
+      more elegant and formal semantic foundation was a formative
+      experience for me.  I learned a lot about what Conal Elliot
+      terms ``denotational design'', and I went through probably 15 or
+      20 versions before finally converging on something that finally
+      felt right.  It's not perfect, but I think it's stood the test
+      of time pretty well.}
+\end{xframe}
+
+\begin{xframe}{}
+  \begin{center}
+    \includegraphics[width=2in]{diagrams-contributors.png}
+  \end{center}
+  \note{A significant aspect of this project was that this was my
+    first open-source project to attract other contributors.  A few
+    people became involved with diagrams 1 and then worked on the
+    rewrite to diagrams 2, which attracted yet more contributors.  For
+    quite a few years we had a vibrant virtual community of around
+    5-10 people, some of whom remain my friends to this day, and there
+  was a long tail of people who contributed in small ways.}
 \end{xframe}
 
 % Why build languages?  What is so joyful about it?  Humans are many
@@ -214,5 +347,16 @@
 % Of course, language can also be used to
 % destroy and exclude...
 
+\begin{xframe}{}
+  {\Large 8. Disco}
+\end{xframe}
+
+\begin{xframe}{}
+  {\Large 9. Swarm}
+\end{xframe}
+
+\begin{xframe}{}
+  
+\end{xframe}
 
 \end{document}
