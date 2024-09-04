@@ -227,11 +227,26 @@ interpCond e = \case
     VBool False -> interpCond e cs
     _other -> error "Got non-bool value in condition"
 
+withTxt :: (Text -> Value) -> Value
+withTxt f = VFun $ \case
+  VTxt x -> f x
+  _other -> error "Unexpected non-text value"
+
+withNat :: (Integer -> Value) -> Value
+withNat f = VFun $ \case
+  VNat x -> f x
+  _other -> error "Unexpected non-natural value"
+
+withBool :: (Bool -> Value) -> Value
+withBool f = VFun $ \case
+  VBool b -> f b
+  _other -> error "Unexpected non-bool value"
+
 interpConst :: Const -> Value
 interpConst = \case
-  CCat -> VFun $ \(VTxt x) -> VFun $ \(VTxt y) -> VTxt (x <> y)
-  CSub -> VFun $ \(VNat x) -> VFun $ \(VNat y) -> VNat (max 0 (x - y))
-  CEQ -> VFun $ \(VNat x) -> VFun $ \(VNat y) -> VBool (x == y)
-  CGT -> VFun $ \(VNat x) -> VFun $ \(VNat y) -> VBool (x > y)
-  CNot -> VFun $ \(VBool x) -> VBool (not x)
-  CShow -> VFun $ \(VNat n) -> VTxt (T.pack (show n))
+  CCat -> withTxt $ \x -> withTxt $ \y -> VTxt (x <> y)
+  CSub -> withNat $ \x -> withNat $ \y -> VNat (max 0 (x - y))
+  CEQ -> withNat $ \x -> withNat $ \y -> VBool (x == y)
+  CGT -> withNat $ \x -> withNat $ \y -> VBool (x > y)
+  CNot -> withBool $ \x -> VBool (not x)
+  CShow -> withNat $ \n -> VTxt (T.pack (show n))
