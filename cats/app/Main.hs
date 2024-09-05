@@ -1,6 +1,6 @@
 {-# LANGUAGE ImportQualifiedPost #-}
 
-import Catena
+import Cats
 import Data.Map qualified as M
 import Data.Text.IO qualified as T
 import System.Environment (getArgs)
