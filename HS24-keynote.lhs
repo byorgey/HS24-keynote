@@ -20,6 +20,9 @@
 \newcommand{\thevenue}{Haskell Symposium}
 \newcommand{\thedate}{6 September 2024}
 
+\newcounter{langcounter}
+\newcommand{\lang}[1]{\stepcounter{langcounter}{\Large \arabic{langcounter}. #1}}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -98,7 +101,7 @@
 % \usepackage{pgfpages}
 % \pgfpagesuselayout{4 on 1}[uspaper, border shrink=5mm]
 
-% \setbeameroption{show notes}
+\setbeameroption{show notes}
 
 \renewcommand{\emph}{\textbf}
 
@@ -129,7 +132,7 @@
 
 \begin{xframe}{}
   \begin{center}
-    {\Large 1. setlang}
+    \lang{setlang}
   \end{center}
   \note{I don't remember why, but I decided to implement a language
     oriented around the evaluation of set expressions, including set
@@ -159,6 +162,12 @@
   Rather, I tell you this story because it turned out to be the start
   of a lifelong obsession with building languages, and XXX.
 
+  Many of the projects I'm most proud of, or that I learned the most
+  from, or that brought me the most joy, are related in one way or
+  another to building languages.  Maybe I'm just weird? We all
+  are weird in our own unique ways, of course, but I don't think I'm
+  weird in this.
+
   JOY of building languages.
 
   XXX also so you can see the languages that you may have heard of
@@ -169,15 +178,20 @@
 
 \begin{xframe}{}
   XXX Outline
+  Going to tell you about some language-building projects I have been
+  involved in,
 \end{xframe}
 
 \begin{xframe}{}
   Discord for questions!
 \end{xframe}
 
+\def\sectionimg{egypt}
+\section{History}
+
 \begin{xframe}{}
   \begin{center}
-    {\Large 2. Context Free Art} \bigskip
+    \lang{Context Free Art} \bigskip
 
     \includegraphics[width=2in]{chalk.png} \smallskip
 
@@ -203,7 +217,7 @@
 
 \begin{xframe}{}
   \begin{center}
-    {\Large 3. Photizon}
+    \lang{Photizon}
   \end{center}
   \note{In college, probably around 2002, I wrote a raytracer as a
     project for my graphics class, which I named Photizon.  The
@@ -227,7 +241,7 @@
 
 \begin{xframe}{}
   \begin{center}
-    {\Large 4. c2bef} \bigskip
+    \lang{c2bef} \bigskip
 
     \includegraphics[width=5in]{befunge.png}
   \end{center}
@@ -257,7 +271,7 @@
 
 \begin{xframe}{}
   \begin{center}
-    {\Large 5. adventure} \bigskip
+    \lang{adventure} \bigskip
 
     \includegraphics[width=4in]{adventure.png}
   \end{center}
@@ -271,7 +285,7 @@
 
 \begin{xframe}{}
   \begin{center}
-    {\Large 6. species} \bigskip
+    \lang{species} \bigskip
 
     \includegraphics[width=3in]{species.png}
   \end{center}
@@ -284,7 +298,22 @@
 
 \begin{xframe}{}
   \begin{center}
-    {\Large 7. diagrams} \bigskip
+    \lang{GHC} \bigskip
+
+    \includegraphics[width=1.5in]{cambridge.jpg} \note{I spent the
+      summer of 2010 doing an internship at Microsoft Research in
+      Cambridge.  (That's me punting on the Cam with my mother-in-law,
+      my third-cousin-in-law, and Celeste the Travel Bear.)  Spent the
+      summer thinking about promoting types to kinds, and helping
+      implement an overhaul of GHC's constraint solver.  This one is
+      different since it's not a language that I created, but I
+      include it since XXX}
+  \end{center}
+\end{xframe}
+
+\begin{xframe}{}
+  \begin{center}
+    \lang{diagrams} \bigskip
 
     \includegraphics[width=5in]{diagrams.png}
   \end{center}
@@ -316,7 +345,19 @@
   was a long tail of people who contributed in small ways.}
 \end{xframe}
 
-% Why build languages?  What is so joyful about it?  Humans are many
+\def\sectionimg{eridanus_cropped}
+\section{Building languages and being human}
+
+\note{Let's take a step back.  Why build languages?  What is so joyful
+  about it?}
+
+\begin{xframe}
+  \begin{center}
+    \includegraphics[width=5in]{creation_of_adam}
+  \end{center}
+\end{xframe}
+
+% Humans are many
 % things, but according to my faith tradition, there are two primary
 % things that characterize what it is to be human: we are made
 % to be creative, and made to be in community.  (Image: Creation of
@@ -348,15 +389,15 @@
 % destroy and exclude...
 
 \begin{xframe}{}
-  {\Large 8. Disco}
+  \lang{Disco}
 \end{xframe}
 
 \begin{xframe}{}
-  {\Large 9. Swarm}
+  \lang{Swarm}
 \end{xframe}
 
 \begin{xframe}{}
-  
+  \lang{Let's build a language together!}
 \end{xframe}
 
 \end{document}
