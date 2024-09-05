@@ -2,7 +2,7 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Catena where
+module Cats where
 
 import Control.Monad (when)
 import Control.Monad.Combinators.Expr
