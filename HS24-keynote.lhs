@@ -101,7 +101,7 @@
 % \usepackage{pgfpages}
 % \pgfpagesuselayout{4 on 1}[uspaper, border shrink=5mm]
 
-\setbeameroption{show notes}
+% \setbeameroption{show notes}
 
 \renewcommand{\emph}{\textbf}
 
