@@ -513,38 +513,81 @@
 
     \includegraphics[width=1in]{disco}
   \end{center}
-  \note{Disco is a language I have developed for teaching functional
-    programming principles + discrete mathematics.  I use it when I
-    teach Discrete Math, typically to second-year undergraduates.  It
-    is designed to be as close as possible to standard mathematical
-    syntax and practice, to minimize the degree to which students feel
-    they are being forced to learn two languages (the language of
-    mathematics and a programming language).  It both exposes them to
-    some functional programming ideas, and gives them a computational
+  \note{Disco began as a collaboration with Harley Eades at TFPIE
+    2016.  We got excited about the idea of a language for teaching
+    functional programming principles + discrete mathematics and spent
+    a bunch of time developing some initial ideas, and since then it
+    has grown and matured quite a lot, although it's still rough
+    around the edges in some places.  I use it when I teach Discrete
+    Math, typically to second-year undergraduates.  It is designed to
+    be as close as possible to standard mathematical syntax and
+    practice, to minimize the degree to which students feel they are
+    being forced to learn two languages (the language of mathematics
+    and a programming language).  It both exposes them to some
+    functional programming ideas, and gives them a computational
     playground that helps them internalize the math concepts they are
     learning.}
 \end{xframe}
 
 \begin{xframe}{}
-
+  \begin{center}
+    \includegraphics[width=5in]{disco-code}
+  \end{center}
+  \note{Here's some example Disco code teaching students about set
+    comprehensions (full circle!).  Required a lot of fun creativity
+    to design a language to be close to mathematical syntax and
+    practice, and easy for students to use. Led to some very
+    non-traditional choices.  As a result, the type system is rather
+    complex---and I had to learn a lot about how to make it work
+    (subtyping + qualified polymorphism + equirecursive types, learned
+    from Isabelle). As for community, there were some outside
+    contributors early on, but many students have used it, and many
+    have also gone on to contribute to its implementation.  Two are
+    here with me this week, so Disco has been indirectly responsible
+    for bringing new students into the FP community!}
 \end{xframe}
 
 \begin{xframe}{}
   \begin{center}
     \lang{Swarm} \bigskip
 
-    \includegraphics[width=3in]{swarm-debugger}
+    \includegraphics[width=4in]{swarm-debugger}
   \end{center}
+  \note{Swarm is a 2D resource gathering and programming game.  The
+    only way you can interact with the world is by programming robots
+    to go out and explore and collect resources for you; collecting
+    resources allows you to craft devices that unlock additional
+    programming language features.  Something I started during my
+    sabbatical fall 2021.  So far I've learned a lot about CESK
+    machines, effects type systems, how to deal with variable frame
+    rates, and a bunch of other things.  Has attracted a small but
+    thriving developer community.  I hope one day it will also attract
+    a community of player-developers who will not only play the game
+    but construct and contribute new levels/scenarios.}
 \end{xframe}
 
 \begin{xframe}{}
   \begin{center}
     \url{https://swarm-game.github.io/}
   \end{center}
+  \note{If you want to try it out, please do, it's a lot of fun!
+    Still some big missing features but we would love to hear your
+    feedback.}
 \end{xframe}
 
 \begin{xframe}{}
-  \lang{Let's build a language together!}
+  \begin{center}
+    \lang{Let's build a language together!} \bigskip
+
+    \url{https://github.com/byorgey/HS24-keynote}
+  \end{center}
+
+  \note{I have talked \emph{about} building languages enough, let's
+    actually build one together!  Too risky/long to just completely
+    take your suggestions, so I have something in mind already. But I'd
+    love your suggestions via Discord and even your help with pull
+    requests via GitHub (just be judicious---rather not deal with
+    merge conflicts).  Explain idea of language etc.}
 \end{xframe}
 
 \end{document}
