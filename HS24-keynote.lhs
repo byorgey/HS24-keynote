@@ -122,7 +122,7 @@
     cute, but I think it comes off perhaps as too frivolous.}
 \end{xframe}
 
-\title{\sout{Formulating Functional Formalisms for Fun} \\ The Joy of Building Languages}
+\title{\sout{Formulating Functional Formalisms for Fun} \\ The Joy of Building (Functional) Languages}
 
 \begin{xframe}
   \titlepage \note{Perhaps a better title is this.  I'll let you

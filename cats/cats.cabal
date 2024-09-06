@@ -29,7 +29,7 @@ executable cats
     import:           warnings
     -- other-modules:
     -- other-extensions:
-    build-depends:    base, cats, text, containers
+    build-depends:    base, cats, text, containers, megaparsec
     hs-source-dirs:   app
     main-is:          Main.hs
     default-language: GHC2021
